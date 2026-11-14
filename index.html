@@ -20,6 +20,8 @@
       --accent: #6366f1;
       --accent-glow: rgba(99, 102, 241, 0.3);
       --cyan-accent: #38bdf8;
+      --teal-access: #06b6d4;
+      --pink-washroom: #ec4899;
       --success: #10b981;
       --danger: #ef4444;
       --warning: #f59e0b;
@@ -151,6 +153,22 @@
       border-radius: var(--radius);
       overflow: hidden;
       box-shadow: 0 22px 50px rgba(0, 0, 0, 0.65);
+      display: flex;
+      flex-direction: column;
+    }
+    .console-shell:fullscreen {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      border: none;
+      background: #07090e;
+    }
+    .console-shell:fullscreen .console-body {
+      flex: 1;
+      height: calc(100vh - 54px);
+    }
+    .console-shell:fullscreen #mapExplorerCanvas {
+      height: calc(100vh - 165px);
     }
     .console-topbar {
       display: flex;
@@ -172,19 +190,19 @@
     }
     .console-body {
       display: grid;
-      grid-template-columns: 335px 1fr;
-      min-height: 580px;
+      grid-template-columns: 345px 1fr;
+      min-height: 610px;
     }
     @media (max-width: 880px) {
       .console-body { grid-template-columns: 1fr; }
     }
     .console-sidebar {
-      padding: 18px;
+      padding: 16px 18px;
       background: rgba(10, 14, 24, 0.92);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 13px;
     }
     .console-label {
       display: block;
@@ -202,7 +220,7 @@
       border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--radius-sm);
       color: #f8fafc;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-family: 'Inter', sans-serif;
       color-scheme: dark;
     }
@@ -214,7 +232,7 @@
       min-width: 56px;
       padding: 7px 10px;
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
       color: var(--text-muted);
@@ -229,25 +247,65 @@
       font-weight: 600;
       box-shadow: 0 0 12px var(--accent-glow);
     }
+
+    /* Accessible Mode Toggle Button */
+    .access-toggle-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .access-toggle-btn:hover {
+      border-color: rgba(6, 182, 212, 0.5);
+      background: rgba(6, 182, 212, 0.08);
+    }
+    .access-toggle-btn.active {
+      background: rgba(6, 182, 212, 0.18);
+      border-color: #06b6d4;
+      color: #67e8f9;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+    }
+    .access-pill {
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+    .access-toggle-btn.active .access-pill {
+      background: #06b6d4;
+      color: #07090e;
+    }
+
     .telemetry-box {
       background: rgba(255, 255, 255, 0.025);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 11px 12px;
+      padding: 10px 12px;
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 0.74rem;
     }
     .telemetry-row {
       display: flex;
       justify-content: space-between;
-      padding: 4.5px 0;
+      padding: 4px 0;
       border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
     }
     .telemetry-row:last-child { border-bottom: none; }
     .route-steps-list {
-      max-height: 175px;
+      max-height: 165px;
       overflow-y: auto;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: #cbd5e1;
       display: flex;
       flex-direction: column;
@@ -259,19 +317,24 @@
       border-left: 3px solid var(--accent);
       border-radius: 4px;
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.71rem;
       transition: all 0.2s ease;
       cursor: pointer;
     }
     .route-step-item:hover { background: rgba(255, 255, 255, 0.07); }
-    .route-step-item.portal {
+    .route-step-item.portal-stairs {
       border-left-color: var(--warning);
-      background: rgba(245, 158, 11, 0.08);
+      background: rgba(245, 158, 11, 0.09);
       color: #fde68a;
     }
+    .route-step-item.portal-elevator {
+      border-left-color: var(--teal-access);
+      background: rgba(6, 182, 212, 0.11);
+      color: #67e8f9;
+    }
     .route-step-item.active-step {
-      background: rgba(56, 189, 248, 0.16);
-      border-left-color: var(--cyan-accent);
+      background: rgba(56, 189, 248, 0.2);
+      border-left-color: #fff;
       color: #fff;
     }
 
@@ -281,7 +344,7 @@
       background: radial-gradient(circle at 50% 45%, #111a2e 0%, #07090e 100%);
       display: flex;
       flex-direction: column;
-      min-height: 580px;
+      min-height: 610px;
       overflow: hidden;
       user-select: none;
     }
@@ -315,15 +378,19 @@
       border-bottom-color: rgba(239, 68, 68, 0.45);
       color: #fecaca;
     }
+    .canvas-statusbar.access-active {
+      background: rgba(6, 182, 212, 0.14);
+      border-bottom-color: rgba(6, 182, 212, 0.4);
+    }
     .canvas-viewport {
       position: relative;
       flex: 1;
       width: 100%;
-      min-height: 460px;
+      min-height: 490px;
     }
     #mapExplorerCanvas {
       width: 100%;
-      height: 460px;
+      height: 490px;
       display: block;
       cursor: grab;
     }
@@ -335,7 +402,7 @@
       background: rgba(7, 9, 14, 0.92);
       border-top: 1px solid var(--border);
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.71rem;
       color: #cbd5e1;
       flex-wrap: wrap;
       gap: 12px;
@@ -344,7 +411,7 @@
     .legend-group {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
     }
     .legend-dot {
@@ -384,7 +451,7 @@
     .transit-modal-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(7, 9, 14, 0.8);
+      background: rgba(7, 9, 14, 0.82);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
@@ -398,7 +465,7 @@
       border: 1px solid rgba(245, 158, 11, 0.6);
       border-radius: var(--radius);
       padding: 24px 28px;
-      max-width: 430px;
+      max-width: 440px;
       width: 100%;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 35px rgba(245, 158, 11, 0.22);
       text-align: center;
@@ -438,7 +505,7 @@
     .transit-progress-bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #f59e0b, #38bdf8);
+      background: linear-gradient(90deg, #f59e0b, #06b6d4);
       transition: width 0.06s linear;
     }
 
@@ -503,7 +570,7 @@
 
     <div class="summary-block">
       <h1 class="summary-title">IndoorPulse: Infrastructure-Free Indoor Positioning</h1>
-      <p class="summary-subtitle">Offline-first Android indoor navigation powered by native IMU Pedestrian Dead Reckoning (PDR), a 400-Particle Monte Carlo Localization Filter, multi-floor 3D Euclidean A* pathfinding, and a Cloud-Synced Web Map Console.</p>
+      <p class="summary-subtitle">Offline-first Android indoor navigation powered by native IMU Pedestrian Dead Reckoning (PDR), a 400-Particle Monte Carlo Localization Filter, multi-floor 3D Euclidean A* pathfinding, Wheelchair-Accessible Elevator Routing, and a Cloud-Synced Web Map Console.</p>
     </div>
 
     <!-- 1. EMBEDDED PRESENTATION VIEWER (Placed First so Async PDF Loads Never Hijack Scroll) -->
@@ -551,8 +618,8 @@
         <h2 class="section-title">Interactive Topological Map & 3D A* Route Simulator (Web Interface)</h2>
         <div class="action-group">
           <select id="presetMapSelect" class="console-select" style="width: auto; padding: 6px 10px; font-family: var(--font-mono); font-size: 0.75rem;" onchange="switchPresetMap(this.value)">
+            <option value="horizon">Map: Horizon Innovation Center (3-Floor Demo: Stairs + Elevator + Washrooms)</option>
             <option value="home">Map: Home Survey (Exported Android JSON)</option>
-            <option value="campus">Map: TIET Academic Wing (Multi-Corridor Demo)</option>
           </select>
           <input type="file" id="jsonMapUpload" accept=".json,application/json" style="display: none;">
           <button onclick="document.getElementById('jsonMapUpload').click()" class="btn-action btn-action-primary">Import Android Map (.json) ↑</button>
@@ -561,16 +628,16 @@
         </div>
       </div>
 
-      <div class="console-shell">
+      <div class="console-shell" id="mapConsoleShell">
         <div class="console-topbar">
           <div class="console-meta">
-            <strong id="mapBuildingTitle" style="color: #fff; font-size: 0.95rem; font-family: 'Inter', sans-serif;">Building: Home (Multi-Floor Survey)</strong>
-            <span class="version-badge" id="mapSchemaVersion">Schema v1.0</span>
-            <span class="tag" id="mapGpsBadge">GPS: 30.52184, 75.88488 (r=100m)</span>
-            <span class="tag" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);" id="mapStatsBadge">5 Nodes | 4 Edges</span>
+            <strong id="mapBuildingTitle" style="color: #fff; font-size: 0.95rem; font-family: 'Inter', sans-serif;">Building: Horizon Innovation Center (3-Floor Complex)</strong>
+            <span class="version-badge" id="mapSchemaVersion">Schema v1.2</span>
+            <span class="tag" id="mapGpsBadge">GPS: 30.52184, 75.88488 (r=120m)</span>
+            <span class="tag" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3);" id="mapStatsBadge">18 Nodes | 19 Edges</span>
           </div>
-          <span style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted);">
-            Engine: 3D Euclidean A* + Vertical Portal Transit State Machine
+          <span style="font-family: var(--font-mono); font-size: 0.73rem; color: var(--text-muted);">
+            Engine: 3D Euclidean A* + Stair/Elevator Portal State Machine + Accessible Routing
           </span>
         </div>
 
@@ -578,8 +645,16 @@
           <!-- Left Control & Telemetry Sidebar -->
           <div class="console-sidebar">
             <div>
-              <span class="console-label">Active Floor Level</span>
+              <span class="console-label">Active Floor Level (3D Perspective Offset)</span>
               <div class="floor-switcher" id="floorButtonsContainer"></div>
+            </div>
+
+            <div>
+              <span class="console-label">Accessibility & Mobility Filter</span>
+              <button id="accessibleToggleBtn" class="access-toggle-btn" onclick="toggleAccessibleMode()">
+                <span>♿ Accessible Route (Elevator-Only)</span>
+                <span class="access-pill" id="accessibleStateText">OFF</span>
+              </button>
             </div>
 
             <div>
@@ -597,7 +672,7 @@
               <button onclick="triggerEmergencySos()" class="btn-action btn-action-danger" title="Evacuate from indoor room/current position to nearest Building Entry/Exit">🚨 SOS Nearest Exit</button>
             </div>
 
-            <!-- Pure Topological Graph Telemetry (Zero Unreliable Step/Distance Estimates) -->
+            <!-- Pure Topological Graph Telemetry -->
             <div class="telemetry-box">
               <div class="telemetry-row">
                 <span style="color: var(--text-muted);">Routing Mode:</span>
@@ -608,8 +683,8 @@
                 <span id="metricNodeHops" style="color: #10b981; font-weight: 600;">-- Nodes</span>
               </div>
               <div class="telemetry-row">
-                <span style="color: var(--text-muted);">Floor Portals:</span>
-                <span id="metricTransitions" style="color: #fde68a;">0 Stairwell(s)</span>
+                <span style="color: var(--text-muted);">Vertical Portals:</span>
+                <span id="metricTransitions" style="color: #fde68a;">0 Portal(s)</span>
               </div>
               <div class="telemetry-row">
                 <span style="color: var(--text-muted);">PDR State Machine:</span>
@@ -630,21 +705,23 @@
               <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.74rem;">
                 <span id="activeFloorIndicator" style="color: #38bdf8; font-weight: 600;">Floor L0</span>
                 <span style="color: var(--border);">|</span>
-                <span style="color: var(--text-muted);">Canvas Click Action:</span>
-                <button id="clickModeStartBtn" class="mode-chip active-start" onclick="setCanvasClickMode('start')">● Set Start</button>
-                <button id="clickModeEndBtn" class="mode-chip" onclick="setCanvasClickMode('end')">◎ Set Target</button>
+                <span style="color: var(--text-muted);">Click Sets:</span>
+                <button id="clickModeStartBtn" class="mode-chip active-start" onclick="setCanvasClickMode('start')">● Start</button>
+                <button id="clickModeEndBtn" class="mode-chip" onclick="setCanvasClickMode('end')">◎ Target</button>
               </div>
               <div style="display: flex; align-items: center; gap: 6px;">
-                <button onclick="adjustCanvasZoom(1.2)" class="btn-action" style="padding: 3px 9px;">+</button>
-                <button onclick="adjustCanvasZoom(0.8)" class="btn-action" style="padding: 3px 9px;">−</button>
+                <button onclick="adjustCanvasZoom(1.2)" class="btn-action" style="padding: 3px 9px;" title="Zoom In">+</button>
+                <button onclick="adjustCanvasZoom(0.8)" class="btn-action" style="padding: 3px 9px;" title="Zoom Out">−</button>
                 <button onclick="fitMapToCanvas()" class="btn-action" style="padding: 3px 10px;">Fit Blueprint</button>
+                <button onclick="toggleConsoleFullscreen()" class="btn-action btn-action-primary" id="consoleFullscreenBtn" style="padding: 3px 10px;">⛶ Fullscreen</button>
               </div>
             </div>
 
-            <!-- Dedicated Status & SOS Readout Bar (Never Overlaps Canvas or Nodes!) -->
+            <!-- Dedicated Status & SOS / Accessible Readout Bar (Never Overlaps Canvas or Nodes!) -->
             <div class="canvas-statusbar" id="canvasStatusBar">
-              <span id="hoverNodeReadout">Click any node on blueprint to set Origin • Shift+Click or Right-Click sets Destination</span>
+              <span id="hoverNodeReadout">Click any node to set Origin • Shift+Click or Right-Click sets Destination • 3D Vertical Shafts Visible</span>
               <span id="sosStatusBadge" style="display: none; color: #fca5a5; font-weight: 600;">🚨 SOS EVACUATION ROUTE LOCKED TO NEAREST EXIT</span>
+              <span id="accessStatusBadge" style="display: none; color: #67e8f9; font-weight: 600;">♿ ACCESSIBLE MODE: STAIRS BYPASSED (ELEVATOR ONLY)</span>
             </div>
 
             <!-- Interactive Blueprint Viewport -->
@@ -653,11 +730,11 @@
 
               <!-- Modal Transit State Overlay -->
               <div class="transit-modal-overlay" id="transitModalOverlay">
-                <div class="transit-card">
-                  <span class="transit-badge">⚠ PROXIMITY TRANSIT STATE TRIGGERED</span>
+                <div class="transit-card" id="transitModalCard">
+                  <span class="transit-badge" id="transitModalBadge">⚠ PROXIMITY TRANSIT STATE TRIGGERED</span>
                   <div class="transit-title" id="transitModalTitle">Vertical Portal: Floor L0 → Floor L1</div>
                   <div class="transit-desc" id="transitModalDesc">
-                    PDR step integration & 400-particle dispersion paused while traversing stairwell portal to prevent vertical heading drift.
+                    PDR step integration & 400-particle dispersion paused while traversing vertical portal to prevent heading drift.
                   </div>
                   <div class="transit-progress-track">
                     <div class="transit-progress-bar" id="transitProgressBar"></div>
@@ -675,11 +752,14 @@
                 <span><span class="legend-dot" style="background: #10b981;"></span>Entry / Exit</span>
                 <span><span class="legend-dot" style="background: #38bdf8;"></span>Waypoint</span>
                 <span><span class="legend-dot" style="background: #f59e0b;"></span>Stairs Portal</span>
+                <span><span class="legend-dot" style="background: #06b6d4;"></span>Elevator Portal</span>
+                <span><span class="legend-dot" style="background: #ec4899;"></span>Washroom</span>
                 <span><span class="legend-dot" style="background: #a855f7;"></span>Room Door</span>
               </div>
               <div class="legend-group">
-                <span style="color: #6366f1;">━━ Active Floor A* Path</span>
-                <span style="color: #94a3b8;">┄┄ Adjacent Floor Ghost</span>
+                <span style="color: #6366f1;">━━ Standard A*</span>
+                <span style="color: #06b6d4;">━━ ♿ Accessible A*</span>
+                <span style="color: #f59e0b;">┆┆ 3D Portal Shaft</span>
               </div>
             </div>
           </div>
@@ -719,10 +799,10 @@
       </div>
       <div class="card content-card">
         <h3>The Problem</h3>
-        <p>While GPS revolutionized outdoor navigation, satellite signals attenuate heavily inside multi-story concrete buildings. Navigating complex indoor spaces—such as university academic blocks, hospitals, transit hubs, and large commercial complexes—remains disorienting. Furthermore, traditional indoor positioning systems rely on dense Wi-Fi access point fingerprinting or external BLE beacons that require costly installation and fail during power outages or emergency evacuations.</p>
+        <p>While GPS revolutionized outdoor navigation, satellite signals attenuate heavily inside multi-story concrete buildings. Navigating complex indoor spaces—such as academic blocks, hospitals, transit hubs, and large commercial complexes—remains disorienting. Furthermore, traditional indoor positioning systems rely on dense Wi-Fi access point fingerprinting or external BLE beacons that require costly installation and fail during power outages or emergency evacuations.</p>
         
         <h3>Intended Users</h3>
-        <p>Students, faculty, hospital visitors, campus newcomers, and emergency evacuees who need reliable, offline-first indoor routing that works immediately on standard Android smartphones without external hardware infrastructure.</p>
+        <p>Visitors, students, hospital patients, wheelchair users requiring accessible elevator-only routing, and emergency evacuees who need reliable, offline-first indoor navigation that works immediately on standard Android smartphones without external hardware infrastructure.</p>
         
         <h3>Reason for Selection</h3>
         <p>We selected this problem because building an offline-first indoor positioning engine from first principles combines real-time IMU signal processing, 400-particle Monte Carlo probabilistic state estimation, and 3D multi-floor graph routing into a practical, high-impact system.</p>
@@ -741,9 +821,9 @@
         <h3>The Main User Journey</h3>
         <ul>
           <li><strong>1. Outdoor-to-Indoor Geofence Handshake:</strong> The Outdoor Dashboard monitors live GPS proximity against mapped building geofences (`centerLat`, `centerLng`, `geofenceRadius`) and automatically prompts indoor handoff upon arrival (with manual indoor/outdoor override support).</li>
-          <li><strong>2. Surveyor Mode & Portable JSON Packaging:</strong> An administrator maps the building by placing typed topological nodes (`Building Entry`, `Waypoint`, `Stairs`, `Room Door`) and connecting corridors or cross-floor `vertical_portal` edges with full undo/redo history and dynamic touch-snapping, then exports a versioned `.json` map package.</li>
-          <li><strong>3. Multi-Floor 3D A* & Emergency SOS Routing:</strong> A user selects any destination across floors—or taps the 1-click <strong>SOS Nearest Exit</strong> button—and the 3D Euclidean A* engine calculates the optimal cross-floor trajectory while preventing floor-bleed.</li>
-          <li><strong>4. Live IMU Navigation & Stairwell Transit State UX:</strong> As the user walks, the Dual-Threshold Schmitt Trigger and 400-particle filter advance the gyro-locked navigation chevron along corridors. Entering a stairwell proximity radius automatically triggers the modal <strong>Transit State</strong> overlay, pausing PDR step integration during vertical floor transitions.</li>
+          <li><strong>2. Surveyor Mode & Portable JSON Packaging:</strong> An administrator maps the building by placing typed topological nodes (`Building Entry`, `Waypoint`, `Stairs`, `Elevator`, `Washroom`, `Room Door`) and connecting corridors or cross-floor `vertical_portal` edges with full undo/redo history and dynamic touch-snapping, then exports a versioned `.json` map package.</li>
+          <li><strong>3. Multi-Floor 3D A*, Accessible Mode & Emergency SOS Routing:</strong> A user selects any destination across floors, toggles <strong>♿ Accessible Mode</strong> to strictly bypass stairs in favor of elevators, or taps the 1-click <strong>SOS Nearest Exit</strong> button.</li>
+          <li><strong>4. Live IMU Navigation & Portal Transit State UX:</strong> As the user walks, the Dual-Threshold Schmitt Trigger and 400-particle filter advance the gyro-locked navigation chevron along corridors. Entering a stairwell or elevator proximity radius automatically triggers the modal <strong>Transit State</strong> overlay, pausing PDR step integration during vertical floor transitions.</li>
         </ul>
       </div>
     </section>
@@ -754,12 +834,12 @@
         <h2 class="section-title">Live Demonstration Plan</h2>
       </div>
       <div class="card content-card">
-        <p><strong>Scenario:</strong> End-to-end multi-floor building survey, JSON map export, browser-based 3D A* verification, and live Android PDR navigation.</p>
+        <p><strong>Scenario:</strong> End-to-end multi-floor building survey, JSON map export, browser-based 3D A* & Accessible Elevator verification, and live Android PDR navigation.</p>
         <ul>
           <li><strong>Step 1 (Surveyor & Persistence):</strong> Open IndoorPulse on Android, inspect the multi-floor building topology stored in Room SQLite, and export the versioned `.json` map package with UUID translation.</li>
-          <li><strong>Step 2 (Cross-Floor 3D A* & SOS):</strong> Select an upper-floor room target (or trigger <strong>Emergency SOS</strong>) and observe the 3D Euclidean A* engine compute the path across `corridor` and `vertical_portal` stairwell edges.</li>
-          <li><strong>Step 3 (Live IMU Walk & Schmitt Trigger):</strong> Walk physically with the smartphone—observe the Schmitt Trigger state machine reject hand-shake jitter while the 400-particle filter and gyro-locked chevron track movement and pause automatically inside the stairwell Transit State.</li>
-          <li><strong>Step 4 (Web Map Console Parity):</strong> Load the exported `.json` map into the <strong>Web Map Console</strong> above (or pull it from Backblaze B2) to inspect floor blueprints and simulate the identical 3D A* route and Transit State in the browser.</li>
+          <li><strong>Step 2 (Cross-Floor 3D A*, Accessible Mode & SOS):</strong> Select an upper-floor room target, toggle <strong>♿ Accessible Mode</strong> to observe dynamic rerouting from Stairs to Elevators, or trigger <strong>Emergency SOS</strong>.</li>
+          <li><strong>Step 3 (Live IMU Walk & Schmitt Trigger):</strong> Walk physically with the smartphone—observe the Schmitt Trigger state machine reject hand-shake jitter while the 400-particle filter and gyro-locked chevron track movement and pause automatically inside the vertical portal Transit State.</li>
+          <li><strong>Step 4 (Web Map Console Parity):</strong> Load the exported `.json` map into the <strong>Web Map Console</strong> above (or pull it from Backblaze B2) to inspect 3D-offset floor blueprints and simulate the identical routes in the browser.</li>
         </ul>
       </div>
     </section>
@@ -775,7 +855,7 @@
           <ul>
             <li><strong>IMU Sensor Fusion (`KinematicPDR.kt`):</strong> Polls `TYPE_LINEAR_ACCELERATION` and `TYPE_ROTATION_VECTOR` via a Dual-Threshold Schmitt Trigger state machine and Fused Biomechanical stride model, eliminating stationary desk drift.</li>
             <li><strong>400-Particle Monte Carlo Filter (`ParticleFilter.kt`):</strong> Probabilistic localization engine translating World Space headings into Map Space coordinates with corridor edge clamping and resampling.</li>
-            <li><strong>3D Euclidean A* Router & Transit State:</strong> Replaces flat Dijkstra with multi-floor 3D A* heuristics (`dx, dy, dz`), strict Emergency SOS exit targeting, and proximity-based stairwell PDR pausing.</li>
+            <li><strong>3D Euclidean A* Router & Accessible Filter:</strong> Replaces flat Dijkstra with multi-floor 3D A* heuristics (`dx, dy, dz`), wheelchair-accessible elevator filtering, strict Emergency SOS exit targeting, and proximity-based portal PDR pausing.</li>
           </ul>
         </div>
         <div class="card content-card">
@@ -789,7 +869,7 @@
       </div>
     </section>
 
-    <!-- 8. PROJECT STATUS &PHASE 2 EXTENSION ROADMAP -->
+    <!-- 8. PROJECT STATUS & PHASE 2 EXTENSION ROADMAP -->
     <section id="status">
       <div class="section-header">
         <h2 class="section-title">Project Status & Architectural Roadmap</h2>
@@ -799,8 +879,8 @@
           <h3>Phase 1 Complete (Deployed Core System)</h3>
           <ul>
             <li><strong>Zero-Infrastructure IMU PDR + 400-Particle Filter:</strong> Full step detection, biomechanical stride model, corridor topology clamping, and World-to-Map chirality translation.</li>
-            <li><strong>Multi-Floor 3D A* Routing & SOS Evacuation:</strong> Cross-floor pathfinding across `vertical_portal` stairwells, proximity Transit State modal overlay, and 1-tap SOS routing to true building exits.</li>
-            <li><strong>Surveyor Mode & Portable JSON Engine:</strong> Multi-floor node/edge placement, undo/redo stack, dynamic touch snapping, and versioned `.json` export/import with UUID translation.</li>
+            <li><strong>Multi-Floor 3D A*, Accessible Elevator Routing & SOS:</strong> Cross-floor pathfinding across `Stairs` and `Elevator` portals, wheelchair-accessible stair-bypass mode, proximity Transit State modal overlay, and 1-tap SOS routing to true building exits.</li>
+            <li><strong>Surveyor Mode & Portable JSON Engine:</strong> Multi-floor node/edge placement (`Entry`, `Waypoint`, `Stairs`, `Elevator`, `Washroom`, `Room Door`), undo/redo stack, dynamic touch snapping, and versioned `.json` export/import with UUID translation.</li>
             <li><strong>Web Map Console & AWS EC2 / Backblaze B2 Gateway:</strong> Browser-based 3D A* blueprint simulator and password-protected cloud artifact/map storage.</li>
           </ul>
         </div>
@@ -809,7 +889,7 @@
           <ul>
             <li><strong>ARCore Visual-Inertial Odometry (VIO) Optical Clamping:</strong> Designed as an on-demand optical heading calibration hook for wide, featureless atriums without continuous camera battery drain.</li>
             <li><strong>Opportunistic Wi-Fi / BLE RSSI Drift Anchors:</strong> Modular observation-update hooks in the Particle Filter to passively clamp cumulative IMU drift in buildings where RF beacons already exist.</li>
-            <li><strong>Barometric Auto-Floor Confirmation:</strong> Fusing smartphone pressure sensor deltas (`TYPE_PRESSURE`) to auto-confirm stairwell floor completion without manual confirmation.</li>
+            <li><strong>Barometric Auto-Floor Confirmation:</strong> Fusing smartphone pressure sensor deltas (`TYPE_PRESSURE`) to auto-confirm stairwell/elevator floor arrival without manual confirmation.</li>
           </ul>
         </div>
       </div>
@@ -894,7 +974,7 @@
         </div>
         <div class="form-group">
           <label>Artifact Title</label>
-          <input type="text" id="docTitle" class="form-control" required placeholder="e.g., Final Project Report or Campus Map JSON">
+          <input type="text" id="docTitle" class="form-control" required placeholder="e.g., Final Project Report or Building Map JSON">
         </div>
         <div class="form-group">
           <label>Version Tag</label>
@@ -918,10 +998,75 @@
 
   <script>
     /* =========================================================================
-       1. BUILT-IN MAP PRESETS:
-          - Preset A: Your Exact Exported Home_v1.0_20261114_1248.json
-          - Preset B: Rich Multi-Wing Campus Academic Block for Demo Flexibility
+       1. BUILT-IN MULTI-FLOOR MAP PRESETS:
+          - Preset A (Default): "Horizon Innovation Center (3-Floor Complex)"
+            Demonstrates L0, L1, L2 with distinct 3D-visible Stairwell shafts,
+            Elevator shafts, Washrooms, Rooms, Exits, and Accessible Mode routing!
+          - Preset B: Your Exact Exported Home_v1.0_20261114_1248.json
        ========================================================================= */
+    const HORIZON_COMPLEX_MAP = {
+      "version": "1.2",
+      "building_id": "horizon-innovation-hub-2026",
+      "building_name": "Horizon Innovation Center (3-Floor Complex)",
+      "centerLat": 30.52184,
+      "centerLng": 75.88488,
+      "geofenceRadius": 120,
+      "timestamp": 1794660000000,
+      "nodes": [
+        // --- FLOOR L0 (GROUND LEVEL) ---
+        { "nodeId": "h-l0-main-entry", "x": -4, "y": 11, "floorLevel": 0, "type": "Building Entry", "label": "Main Atrium Entry", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l0-concourse", "x": -4, "y": 3, "floorLevel": 0, "type": "Waypoint", "label": "Central Concourse L0", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l0-washroom", "x": -15, "y": 3, "floorLevel": 0, "type": "Washroom", "label": "Ground Washroom (L0)", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l0-stairs", "x": -11, "y": -5, "floorLevel": 0, "type": "Stairs", "label": "West Stairwell (L0)", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l0-east-hall", "x": 8, "y": 3, "floorLevel": 0, "type": "Waypoint", "label": "East Elevator Lobby L0", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l0-elevator", "x": 8, "y": -5, "floorLevel": 0, "type": "Elevator", "label": "Main Elevator (L0)", "floorId": "f0", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l0-fire-exit", "x": 18, "y": 3, "floorLevel": 0, "type": "Building Entry", "label": "East Emergency Exit", "floorId": "f0", "lat": 0, "lng": 0 },
+
+        // --- FLOOR L1 (FIRST LEVEL) ---
+        { "nodeId": "h-l1-stairs", "x": -9, "y": -8, "floorLevel": 1, "type": "Stairs", "label": "West Stairwell (L1)", "floorId": "f1", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l1-west-hub", "x": -3, "y": -8, "floorLevel": 1, "type": "Waypoint", "label": "L1 West Skybridge", "floorId": "f1", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l1-lab-101", "x": -16, "y": -14, "floorLevel": 1, "type": "Room Door", "label": "Robotics Suite 101", "floorId": "f1", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l1-washroom", "x": -3, "y": -15, "floorLevel": 1, "type": "Washroom", "label": "Accessible Washroom (L1)", "floorId": "f1", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l1-elevator", "x": 10, "y": -8, "floorLevel": 1, "type": "Elevator", "label": "Main Elevator (L1)", "floorId": "f1", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l1-auditorium", "x": 18, "y": -8, "floorLevel": 1, "type": "Room Door", "label": "Conference Hall 102", "floorId": "f1", "lat": 0, "lng": 0 },
+
+        // --- FLOOR L2 (SECOND LEVEL) ---
+        { "nodeId": "h-l2-stairs", "x": -7, "y": -11, "floorLevel": 2, "type": "Stairs", "label": "West Stairwell (L2)", "floorId": "f2", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l2-corridor", "x": 2, "y": -11, "floorLevel": 2, "type": "Waypoint", "label": "L2 Executive Concourse", "floorId": "f2", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l2-elevator", "x": 12, "y": -11, "floorLevel": 2, "type": "Elevator", "label": "Main Elevator (L2)", "floorId": "f2", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l2-boardroom", "x": -14, "y": -19, "floorLevel": 2, "type": "Room Door", "label": "Executive Boardroom 201", "floorId": "f2", "lat": 0, "lng": 0 },
+        { "nodeId": "h-l2-cloudlab", "x": 16, "y": -19, "floorLevel": 2, "type": "Room Door", "label": "Research Core 204", "floorId": "f2", "lat": 0, "lng": 0 }
+      ],
+      "edges": [
+        // Floor L0 Corridors
+        { "edgeId": "he-1", "fromNodeId": "h-l0-main-entry", "toNodeId": "h-l0-concourse", "lengthMeters": 8.0, "edgeType": "corridor" },
+        { "edgeId": "he-2", "fromNodeId": "h-l0-concourse", "toNodeId": "h-l0-washroom", "lengthMeters": 11.0, "edgeType": "corridor" },
+        { "edgeId": "he-3", "fromNodeId": "h-l0-concourse", "toNodeId": "h-l0-stairs", "lengthMeters": 9.5, "edgeType": "corridor" },
+        { "edgeId": "he-4", "fromNodeId": "h-l0-concourse", "toNodeId": "h-l0-east-hall", "lengthMeters": 12.0, "edgeType": "corridor" },
+        { "edgeId": "he-5", "fromNodeId": "h-l0-east-hall", "toNodeId": "h-l0-elevator", "lengthMeters": 8.0, "edgeType": "corridor" },
+        { "edgeId": "he-6", "fromNodeId": "h-l0-east-hall", "toNodeId": "h-l0-fire-exit", "lengthMeters": 10.0, "edgeType": "corridor" },
+
+        // Floor L1 Corridors
+        { "edgeId": "he-7", "fromNodeId": "h-l1-stairs", "toNodeId": "h-l1-west-hub", "lengthMeters": 6.0, "edgeType": "corridor" },
+        { "edgeId": "he-8", "fromNodeId": "h-l1-stairs", "toNodeId": "h-l1-lab-101", "lengthMeters": 9.2, "edgeType": "corridor" },
+        { "edgeId": "he-9", "fromNodeId": "h-l1-west-hub", "toNodeId": "h-l1-washroom", "lengthMeters": 7.0, "edgeType": "corridor" },
+        { "edgeId": "he-10", "fromNodeId": "h-l1-west-hub", "toNodeId": "h-l1-elevator", "lengthMeters": 13.0, "edgeType": "corridor" },
+        { "edgeId": "he-11", "fromNodeId": "h-l1-elevator", "toNodeId": "h-l1-auditorium", "lengthMeters": 8.0, "edgeType": "corridor" },
+
+        // Floor L2 Corridors
+        { "edgeId": "he-12", "fromNodeId": "h-l2-stairs", "toNodeId": "h-l2-corridor", "lengthMeters": 9.0, "edgeType": "corridor" },
+        { "edgeId": "he-13", "fromNodeId": "h-l2-corridor", "toNodeId": "h-l2-elevator", "lengthMeters": 10.0, "edgeType": "corridor" },
+        { "edgeId": "he-14", "fromNodeId": "h-l2-stairs", "toNodeId": "h-l2-boardroom", "lengthMeters": 10.6, "edgeType": "corridor" },
+        { "edgeId": "he-15", "fromNodeId": "h-l2-elevator", "toNodeId": "h-l2-cloudlab", "lengthMeters": 9.0, "edgeType": "corridor" },
+
+        // Cross-Floor Vertical Portals (Stairs vs. Elevators)
+        { "edgeId": "he-p1", "fromNodeId": "h-l0-stairs", "toNodeId": "h-l1-stairs", "lengthMeters": 18.0, "edgeType": "vertical_portal" },
+        { "edgeId": "he-p2", "fromNodeId": "h-l1-stairs", "toNodeId": "h-l2-stairs", "lengthMeters": 18.0, "edgeType": "vertical_portal" },
+        { "edgeId": "he-p3", "fromNodeId": "h-l0-elevator", "toNodeId": "h-l1-elevator", "lengthMeters": 24.0, "edgeType": "vertical_portal" },
+        { "edgeId": "he-p4", "fromNodeId": "h-l1-elevator", "toNodeId": "h-l2-elevator", "lengthMeters": 24.0, "edgeType": "vertical_portal" }
+      ]
+    };
+
     const HOME_SURVEY_MAP = {
       "version": "1.0",
       "building_id": "c740bcb6-39ae-4509-9e76-c36dcab56b35",
@@ -1019,43 +1164,11 @@
       ]
     };
 
-    const CAMPUS_DEMO_MAP = {
-      "version": "1.2",
-      "building_id": "tiet-csed-block-2026",
-      "building_name": "TIET Academic Wing (Multi-Floor)",
-      "centerLat": 30.35412,
-      "centerLng": 76.36492,
-      "geofenceRadius": 120,
-      "timestamp": 1794650000000,
-      "nodes": [
-        { "nodeId": "n-main-entry", "x": 0, "y": 8, "floorLevel": 0, "type": "Building Entry", "label": "Main Atrium Entry", "floorId": "f0", "lat": 0, "lng": 0 },
-        { "nodeId": "n-junc-lobby", "x": 0, "y": 0, "floorLevel": 0, "type": "Waypoint", "label": "Central Lobby Hub", "floorId": "f0", "lat": 0, "lng": 0 },
-        { "nodeId": "n-west-hall", "x": -10, "y": 0, "floorLevel": 0, "type": "Waypoint", "label": "West Corridor L0", "floorId": "f0", "lat": 0, "lng": 0 },
-        { "nodeId": "n-lab-101", "x": -16, "y": -5, "floorLevel": 0, "type": "Room Door", "label": "Systems Lab 101", "floorId": "f0", "lat": 0, "lng": 0 },
-        { "nodeId": "n-east-exit", "x": 12, "y": 0, "floorLevel": 0, "type": "Building Entry", "label": "East Fire Exit", "floorId": "f0", "lat": 0, "lng": 0 },
-        { "nodeId": "n-stairs-l0", "x": 0, "y": -9, "floorLevel": 0, "type": "Stairs", "label": "Central Stairwell (L0)", "floorId": "f0", "lat": 0, "lng": 0 },
-        { "nodeId": "n-stairs-l1", "x": 0, "y": -9, "floorLevel": 1, "type": "Stairs", "label": "Central Stairwell (L1)", "floorId": "f1", "lat": 0, "lng": 0 },
-        { "nodeId": "n-l1-corridor", "x": -7, "y": -9, "floorLevel": 1, "type": "Waypoint", "label": "L1 North Junction", "floorId": "f1", "lat": 0, "lng": 0 },
-        { "nodeId": "n-faculty-204", "x": -14, "y": -14, "floorLevel": 1, "type": "Room Door", "label": "Project Eval Room 204", "floorId": "f1", "lat": 0, "lng": 0 },
-        { "nodeId": "n-seminar-202", "x": 8, "y": -13, "floorLevel": 1, "type": "Room Door", "label": "Seminar Hall 202", "floorId": "f1", "lat": 0, "lng": 0 }
-      ],
-      "edges": [
-        { "edgeId": "e1", "fromNodeId": "n-main-entry", "toNodeId": "n-junc-lobby", "lengthMeters": 8.0, "edgeType": "corridor" },
-        { "edgeId": "e2", "fromNodeId": "n-junc-lobby", "toNodeId": "n-west-hall", "lengthMeters": 10.0, "edgeType": "corridor" },
-        { "edgeId": "e3", "fromNodeId": "n-west-hall", "toNodeId": "n-lab-101", "lengthMeters": 7.8, "edgeType": "corridor" },
-        { "edgeId": "e4", "fromNodeId": "n-junc-lobby", "toNodeId": "n-east-exit", "lengthMeters": 12.0, "edgeType": "corridor" },
-        { "edgeId": "e5", "fromNodeId": "n-junc-lobby", "toNodeId": "n-stairs-l0", "lengthMeters": 9.0, "edgeType": "corridor" },
-        { "edgeId": "e6", "fromNodeId": "n-stairs-l0", "toNodeId": "n-stairs-l1", "lengthMeters": 30.0, "edgeType": "vertical_portal" },
-        { "edgeId": "e7", "fromNodeId": "n-stairs-l1", "toNodeId": "n-l1-corridor", "lengthMeters": 7.0, "edgeType": "corridor" },
-        { "edgeId": "e8", "fromNodeId": "n-l1-corridor", "toNodeId": "n-faculty-204", "lengthMeters": 8.6, "edgeType": "corridor" },
-        { "edgeId": "e9", "fromNodeId": "n-stairs-l1", "toNodeId": "n-seminar-202", "lengthMeters": 8.9, "edgeType": "corridor" }
-      ]
-    };
-
-    let activeMap = JSON.parse(JSON.stringify(HOME_SURVEY_MAP));
+    let activeMap = JSON.parse(JSON.stringify(HORIZON_COMPLEX_MAP));
     let currentFloor = 0;
     let activeRoute = [];
     let isSosMode = false;
+    let isAccessibleMode = false;
     let canvasClickMode = 'start';
     let hoveredNode = null;
 
@@ -1076,7 +1189,7 @@
 
     const mapCanvas = document.getElementById('mapExplorerCanvas');
     const mapCtx = mapCanvas.getContext('2d');
-    let viewTransform = { scale: 28, offsetX: 0, offsetY: 0, isDragging: false, lastX: 0, lastY: 0 };
+    let viewTransform = { scale: 24, offsetX: 0, offsetY: 0, isDragging: false, lastX: 0, lastY: 0 };
 
     function getCanvasMouseCoords(e) {
       const rect = mapCanvas.getBoundingClientRect();
@@ -1091,15 +1204,46 @@
     function resizeMapCanvas() {
       const rect = mapCanvas.getBoundingClientRect();
       mapCanvas.width = Math.max(400, Math.floor(rect.width));
-      mapCanvas.height = Math.max(460, Math.floor(rect.height));
+      mapCanvas.height = Math.max(490, Math.floor(rect.height));
       fitMapToCanvas();
     }
     window.addEventListener('resize', resizeMapCanvas);
+
+    function toggleConsoleFullscreen() {
+      const shell = document.getElementById('mapConsoleShell');
+      const btn = document.getElementById('consoleFullscreenBtn');
+      if (!document.fullscreenElement) {
+        if (shell.requestFullscreen) shell.requestFullscreen();
+        else if (shell.webkitRequestFullscreen) shell.webkitRequestFullscreen();
+        if (btn) btn.innerText = '✕ Exit Fullscreen';
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        if (btn) btn.innerText = '⛶ Fullscreen';
+      }
+      setTimeout(resizeMapCanvas, 120);
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+      const btn = document.getElementById('consoleFullscreenBtn');
+      if (!document.fullscreenElement && btn) btn.innerText = '⛶ Fullscreen';
+      setTimeout(resizeMapCanvas, 120);
+    });
 
     function setCanvasClickMode(mode) {
       canvasClickMode = mode;
       document.getElementById('clickModeStartBtn').className = 'mode-chip' + (mode === 'start' ? ' active-start' : '');
       document.getElementById('clickModeEndBtn').className = 'mode-chip' + (mode === 'end' ? ' active-end' : '');
+    }
+
+    function toggleAccessibleMode() {
+      isAccessibleMode = !isAccessibleMode;
+      const btn = document.getElementById('accessibleToggleBtn');
+      const pill = document.getElementById('accessibleStateText');
+      btn.classList.toggle('active', isAccessibleMode);
+      pill.innerText = isAccessibleMode ? 'ON (ELEVATOR ONLY)' : 'OFF';
+      updateStatusBanners();
+      computeAndRenderRoute();
     }
 
     function getFloorsList() {
@@ -1111,34 +1255,98 @@
       return activeMap.nodes.find(n => n.nodeId === id);
     }
 
+    function isStairNode(node) {
+      if (!node) return false;
+      const t = (node.type || '').toLowerCase();
+      return t.includes('stair');
+    }
+
+    function isElevatorNode(node) {
+      if (!node) return false;
+      const t = (node.type || '').toLowerCase();
+      return t.includes('elevator') || t.includes('lift');
+    }
+
+    function isWashroomNode(node) {
+      if (!node) return false;
+      const t = (node.type || '').toLowerCase();
+      return t.includes('washroom') || t.includes('restroom') || t.includes('toilet');
+    }
+
     function getNodeColor(type) {
       const t = (type || '').toLowerCase();
       if (t.includes('entry') || t.includes('exit')) return '#10b981';
-      if (t.includes('stair') || t.includes('elevator') || t.includes('portal')) return '#f59e0b';
+      if (t.includes('elevator') || t.includes('lift')) return '#06b6d4';
+      if (t.includes('stair') || t.includes('portal')) return '#f59e0b';
+      if (t.includes('washroom') || t.includes('restroom')) return '#ec4899';
       if (t.includes('room') || t.includes('door')) return '#a855f7';
       return '#38bdf8';
     }
 
-    function getPortalPartnerNode(nodeId) {
+    function getPortalPartners(nodeId) {
+      const partners = [];
       for (const e of activeMap.edges) {
         if (e.edgeType === 'vertical_portal') {
-          if (e.fromNodeId === nodeId) return getNodeById(e.toNodeId);
-          if (e.toNodeId === nodeId) return getNodeById(e.fromNodeId);
+          if (e.fromNodeId === nodeId) {
+            const p = getNodeById(e.toNodeId);
+            if (p) partners.push(p);
+          } else if (e.toNodeId === nodeId) {
+            const p = getNodeById(e.fromNodeId);
+            if (p) partners.push(p);
+          }
         }
       }
-      return null;
+      return partners;
     }
 
-    /* 3D Euclidean A* Routing Engine matching IndoorPulse Android */
-    function runAStar3D(startId, goalId) {
+    /* 3D Perspective Screen Projection:
+       Even if two portal nodes on different floors share identical (x, y) coordinates
+       (like in Home_v1.0.json), projecting non-active floors with a subtle 3D isometric
+       offset makes BOTH the starting and ending floor nodes + vertical shaft clearly visible! */
+    function nodeToScreen(node) {
+      if (!node) return { x: 0, y: 0 };
+      const floorDelta = (node.floorLevel || 0) - currentFloor;
+      const isoOffsetX = floorDelta * 0.85;
+      const isoOffsetY = -floorDelta * 1.15;
+      return {
+        x: (node.x + isoOffsetX) * viewTransform.scale + viewTransform.offsetX,
+        y: (node.y + isoOffsetY) * viewTransform.scale + viewTransform.offsetY
+      };
+    }
+
+    function worldToScreen(wx, wy, floorLevel = currentFloor) {
+      const floorDelta = floorLevel - currentFloor;
+      const isoOffsetX = floorDelta * 0.85;
+      const isoOffsetY = -floorDelta * 1.15;
+      return {
+        x: (wx + isoOffsetX) * viewTransform.scale + viewTransform.offsetX,
+        y: (wy + isoOffsetY) * viewTransform.scale + viewTransform.offsetY
+      };
+    }
+
+    /* 3D Euclidean A* Routing Engine with Wheelchair-Accessible Mode Filtering */
+    function runAStar3D(startId, goalId, enforceAccessible = isAccessibleMode) {
       if (!startId || !goalId) return [];
       const startNode = getNodeById(startId);
       const goalNode = getNodeById(goalId);
       if (!startNode || !goalNode) return [];
 
+      // If Accessible Mode is active and user explicitly selected a Stair node, block cross-floor stair traversal
       const adj = new Map();
       activeMap.nodes.forEach(n => adj.set(n.nodeId, []));
+
       activeMap.edges.forEach(e => {
+        const nFrom = getNodeById(e.fromNodeId);
+        const nTo = getNodeById(e.toNodeId);
+        if (!nFrom || !nTo) return;
+
+        // Wheelchair Accessible Filter: Disallow vertical_portal edges that use Stairs, and disallow traversing Stair nodes
+        if (enforceAccessible) {
+          if (isStairNode(nFrom) || isStairNode(nTo)) {
+            return;
+          }
+        }
+
         if (adj.has(e.fromNodeId) && adj.has(e.toNodeId)) {
           adj.get(e.fromNodeId).push({ to: e.toNodeId, weight: Number(e.lengthMeters) || 1, edgeType: e.edgeType });
           adj.get(e.toNodeId).push({ to: e.fromNodeId, weight: Number(e.lengthMeters) || 1, edgeType: e.edgeType });
@@ -1200,16 +1408,16 @@
       return [];
     }
 
-    function updateSosStatusBanner() {
+    function updateStatusBanners() {
       const statusBar = document.getElementById('canvasStatusBar');
       const sosBadge = document.getElementById('sosStatusBadge');
-      if (isSosMode) {
-        statusBar.classList.add('sos-active');
-        sosBadge.style.display = 'inline';
-      } else {
-        statusBar.classList.remove('sos-active');
-        sosBadge.style.display = 'none';
-      }
+      const accessBadge = document.getElementById('accessStatusBadge');
+
+      statusBar.classList.toggle('sos-active', isSosMode);
+      statusBar.classList.toggle('access-active', !isSosMode && isAccessibleMode);
+
+      sosBadge.style.display = isSosMode ? 'inline' : 'none';
+      accessBadge.style.display = (!isSosMode && isAccessibleMode) ? 'inline' : 'none';
     }
 
     function initMapConsoleUI() {
@@ -1252,19 +1460,21 @@
 
       if (activeMap.nodes.length >= 2) {
         startSel.selectedIndex = 0;
-        endSel.selectedIndex = activeMap.nodes.length - 1;
+        // Default target on Horizon map: Executive Boardroom 201 on Floor L2 so multi-floor Stairs vs Elevator is immediately visible
+        const boardroomIdx = activeMap.nodes.findIndex(n => n.nodeId === 'h-l2-boardroom');
+        endSel.selectedIndex = boardroomIdx !== -1 ? boardroomIdx : activeMap.nodes.length - 1;
       }
 
       document.getElementById('activeFloorIndicator').innerText = `Floor L${currentFloor}`;
       isSosMode = false;
-      updateSosStatusBanner();
+      updateStatusBanners();
       computeAndRenderRoute();
       fitMapToCanvas();
     }
 
     function onRouteSelectionChange() {
       isSosMode = false;
-      updateSosStatusBanner();
+      updateStatusBanners();
       computeAndRenderRoute();
     }
 
@@ -1281,14 +1491,24 @@
       stopRouteSimulation();
       const startId = document.getElementById('startNodeSelect').value;
       const endId = document.getElementById('endNodeSelect').value;
-      activeRoute = runAStar3D(startId, endId);
+      activeRoute = runAStar3D(startId, endId, isAccessibleMode);
 
-      let portalCount = 0;
+      let stairPortals = 0;
+      let elevatorPortals = 0;
       const stepsContainer = document.getElementById('routeStepsList');
       stepsContainer.innerHTML = '';
 
-      document.getElementById('metricMode').innerText = isSosMode ? '🚨 SOS EVACUATION' : '3D Euclidean A*';
-      document.getElementById('metricMode').style.color = isSosMode ? '#ef4444' : '#a5b4fc';
+      const modeEl = document.getElementById('metricMode');
+      if (isSosMode) {
+        modeEl.innerText = isAccessibleMode ? '🚨 ♿ ACCESSIBLE SOS' : '🚨 SOS EVACUATION';
+        modeEl.style.color = '#ef4444';
+      } else if (isAccessibleMode) {
+        modeEl.innerText = '♿ Accessible (No Stairs)';
+        modeEl.style.color = '#06b6d4';
+      } else {
+        modeEl.innerText = '3D Euclidean A*';
+        modeEl.style.color = '#a5b4fc';
+      }
 
       if (activeRoute.length > 0) {
         for (let i = 0; i < activeRoute.length; i++) {
@@ -1301,36 +1521,57 @@
               (e.toNodeId === node.nodeId && e.fromNodeId === nextId)
             );
             if (edgeInfo && edgeInfo.edgeType === 'vertical_portal') {
-              portalCount++;
+              if (isElevatorNode(node)) elevatorPortals++;
+              else stairPortals++;
             }
           }
 
           const div = document.createElement('div');
           div.id = `route-step-dom-${i}`;
           const isPortalStep = edgeInfo && edgeInfo.edgeType === 'vertical_portal';
-          div.className = 'route-step-item' + (isPortalStep ? ' portal' : '');
+          const portalClass = isPortalStep ? (isElevatorNode(node) ? ' portal-elevator' : ' portal-stairs') : '';
+          div.className = 'route-step-item' + portalClass;
           const nextNode = (i < activeRoute.length - 1) ? getNodeById(activeRoute[i + 1]) : null;
 
-          div.innerHTML = `${i + 1}. <strong>${node.label}</strong> (L${node.floorLevel})` +
-            (edgeInfo
-              ? (isPortalStep
-                  ? ` → <span>[Stairwell Portal → Switch to L${nextNode ? nextNode.floorLevel : ''}]</span>`
-                  : ` → <span>[Corridor Segment]</span>`)
-              : (isSosMode ? ' [SAFE EXIT REACHED]' : ' [Target Reached]'));
+          let actionLabel = '';
+          if (edgeInfo) {
+            if (isPortalStep) {
+              const pType = isElevatorNode(node) ? '🛗 Elevator Portal' : '🪜 Stairwell Portal';
+              actionLabel = ` → <span>[${pType} → Floor L${nextNode ? nextNode.floorLevel : ''}]</span>`;
+            } else {
+              actionLabel = ` → <span>[Corridor Segment]</span>`;
+            }
+          } else {
+            actionLabel = isSosMode ? ' [SAFE EXIT REACHED]' : ' [Target Reached]';
+          }
 
+          div.innerHTML = `${i + 1}. <strong>${node.label}</strong> (L${node.floorLevel})${actionLabel}`;
           div.onclick = () => selectFloor(node.floorLevel);
           stepsContainer.appendChild(div);
         }
 
         const hops = Math.max(0, activeRoute.length - 1);
         document.getElementById('metricNodeHops').innerText = `${activeRoute.length} Nodes (${hops} Hops)`;
-        document.getElementById('metricTransitions').innerText = `${portalCount} Stairwell(s)`;
+        if (elevatorPortals > 0 && stairPortals === 0) {
+          document.getElementById('metricTransitions').innerText = `${elevatorPortals} Elevator(s)`;
+          document.getElementById('metricTransitions').style.color = '#67e8f9';
+        } else if (stairPortals > 0 && elevatorPortals === 0) {
+          document.getElementById('metricTransitions').innerText = `${stairPortals} Stairwell(s)`;
+          document.getElementById('metricTransitions').style.color = '#fde68a';
+        } else {
+          document.getElementById('metricTransitions').innerText = `${stairPortals + elevatorPortals} Portal(s)`;
+          document.getElementById('metricTransitions').style.color = '#cbd5e1';
+        }
         document.getElementById('metricPdrState').innerText = 'Standby (Ready)';
       } else {
-        document.getElementById('metricNodeHops').innerText = 'Unreachable';
-        document.getElementById('metricTransitions').innerText = '0 Stairwell(s)';
-        document.getElementById('metricPdrState').innerText = 'No Valid Route';
-        stepsContainer.innerHTML = `<div class="route-step-item">No connected path between selected nodes.</div>`;
+        document.getElementById('metricNodeHops').innerText = 'Blocked / No Elevator';
+        document.getElementById('metricTransitions').innerText = '0 Portal(s)';
+        document.getElementById('metricPdrState').innerText = isAccessibleMode ? 'No Elevator on Map' : 'No Valid Route';
+        stepsContainer.innerHTML = `<div class="route-step-item" style="border-left-color:#ef4444; color:#fca5a5;">${
+          isAccessibleMode
+            ? '♿ No wheelchair-accessible (elevator) route exists between these floors on this map. Toggle Accessible Mode OFF to allow stairs.'
+            : 'No connected path between selected nodes.'
+        }</div>`;
       }
 
       renderMapCanvas();
@@ -1356,10 +1597,13 @@
 
       const isOriginAlreadyExit = exitNodes.some(ex => ex.nodeId === originId);
       if (isOriginAlreadyExit) {
-        if (currentTargetId && !exitNodes.some(ex => ex.nodeId === currentTargetId)) {
+        if (currentTargetId && !exitNodes.some(ex => ex.nodeId === currentTargetId) && !(isAccessibleMode && isStairNode(getNodeById(currentTargetId)))) {
           originId = currentTargetId;
         } else {
-          const indoorNodes = activeMap.nodes.filter(n => !exitNodes.some(ex => ex.nodeId === n.nodeId));
+          const indoorNodes = activeMap.nodes.filter(n =>
+            !exitNodes.some(ex => ex.nodeId === n.nodeId) &&
+            !(isAccessibleMode && isStairNode(n))
+          );
           if (indoorNodes.length > 0) {
             indoorNodes.sort((a, b) => b.floorLevel - a.floorLevel);
             originId = indoorNodes[0].nodeId;
@@ -1372,7 +1616,7 @@
 
       exitNodes.forEach(exitNode => {
         if (exitNode.nodeId === originId) return;
-        const candidatePath = runAStar3D(originId, exitNode.nodeId);
+        const candidatePath = runAStar3D(originId, exitNode.nodeId, isAccessibleMode);
         if (candidatePath.length > 1) {
           let cost = 0;
           for (let i = 0; i < candidatePath.length - 1; i++) {
@@ -1392,7 +1636,7 @@
       document.getElementById('startNodeSelect').value = originId;
       document.getElementById('endNodeSelect').value = bestExitId;
       isSosMode = true;
-      updateSosStatusBanner();
+      updateStatusBanners();
 
       const originNode = getNodeById(originId);
       if (originNode) selectFloor(originNode.floorLevel);
@@ -1401,33 +1645,30 @@
       startRouteSimulation(true);
     }
 
-    function worldToScreen(wx, wy) {
-      return {
-        x: wx * viewTransform.scale + viewTransform.offsetX,
-        y: wy * viewTransform.scale + viewTransform.offsetY
-      };
-    }
-
     function fitMapToCanvas() {
       if (!activeMap.nodes || activeMap.nodes.length === 0) return;
       let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
       activeMap.nodes.forEach(n => {
-        if (n.x < minX) minX = n.x;
-        if (n.x > maxX) maxX = n.x;
-        if (n.y < minY) minY = n.y;
-        if (n.y > maxY) maxY = n.y;
+        const floorDelta = (n.floorLevel || 0) - currentFloor;
+        const px = n.x + floorDelta * 0.85;
+        const py = n.y - floorDelta * 1.15;
+        if (px < minX) minX = px;
+        if (px > maxX) maxX = px;
+        if (py < minY) minY = py;
+        if (py > maxY) maxY = py;
       });
 
-      const spanX = Math.max(5, maxX - minX);
-      const spanY = Math.max(5, maxY - minY);
-      const pad = 115;
-      const scaleX = (mapCanvas.width - pad * 2) / spanX;
-      const scaleY = (mapCanvas.height - pad * 2) / spanY;
-      viewTransform.scale = Math.max(14, Math.min(44, Math.min(scaleX, scaleY)));
+      const spanX = Math.max(6, maxX - minX);
+      const spanY = Math.max(6, maxY - minY);
+      const padX = 135;
+      const padY = 95;
+      const scaleX = (mapCanvas.width - padX * 2) / spanX;
+      const scaleY = (mapCanvas.height - padY * 2) / spanY;
+      viewTransform.scale = Math.max(12, Math.min(38, Math.min(scaleX, scaleY)));
 
       const centerX = (minX + maxX) / 2;
       const centerY = (minY + maxY) / 2;
-      viewTransform.offsetX = mapCanvas.width / 2 - centerX * viewTransform.scale;
+      viewTransform.offsetX = mapCanvas.width / 2 - centerX * viewTransform.scale - 20;
       viewTransform.offsetY = mapCanvas.height / 2 - centerY * viewTransform.scale;
       renderMapCanvas();
     }
@@ -1441,7 +1682,7 @@
       renderMapCanvas();
     }
 
-    /* CLEAN ARCHITECTURAL BLUEPRINT RENDERER (No Cluttered Distance Badges or Overlapping Labels) */
+    /* ARCHITECTURAL 3D MULTI-FLOOR BLUEPRINT RENDERER */
     function renderMapCanvas() {
       const w = mapCanvas.width;
       const h = mapCanvas.height;
@@ -1464,38 +1705,47 @@
         mapCtx.stroke();
       }
 
-      // 2. Outer Building Floorplate Boundary Box
-      if (activeMap.nodes.length > 0) {
+      // 2. Floorplate Boundary Boxes (Ghost Adjacent Floors + Active Floor)
+      const floors = getFloorsList();
+      floors.forEach(fl => {
+        const floorNodes = activeMap.nodes.filter(n => n.floorLevel === fl);
+        if (floorNodes.length === 0) return;
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-        activeMap.nodes.forEach(n => {
-          if (n.x < minX) minX = n.x;
-          if (n.x > maxX) maxX = n.x;
-          if (n.y < minY) minY = n.y;
-          if (n.y > maxY) maxY = n.y;
+        floorNodes.forEach(n => {
+          const pt = nodeToScreen(n);
+          if (pt.x < minX) minX = pt.x;
+          if (pt.x > maxX) maxX = pt.x;
+          if (pt.y < minY) minY = pt.y;
+          if (pt.y > maxY) maxY = pt.y;
         });
-        const tl = worldToScreen(minX - 2.2, minY - 2.2);
-        const br = worldToScreen(maxX + 2.2, maxY + 2.2);
+        const pad = 36;
+        const isCurrent = fl === currentFloor;
         mapCtx.save();
-        mapCtx.fillStyle = 'rgba(15, 23, 42, 0.32)';
-        mapCtx.strokeStyle = 'rgba(99, 102, 241, 0.16)';
-        mapCtx.lineWidth = 1.5;
-        mapCtx.setLineDash([8, 6]);
+        mapCtx.fillStyle = isCurrent ? 'rgba(15, 23, 42, 0.36)' : 'rgba(15, 23, 42, 0.1)';
+        mapCtx.strokeStyle = isCurrent ? 'rgba(99, 102, 241, 0.24)' : 'rgba(148, 163, 184, 0.07)';
+        mapCtx.lineWidth = isCurrent ? 1.5 : 1;
+        mapCtx.setLineDash(isCurrent ? [8, 6] : [4, 6]);
         mapCtx.beginPath();
-        mapCtx.roundRect(tl.x, tl.y, br.x - tl.x, br.y - tl.y, 14);
+        mapCtx.roundRect(minX - pad, minY - pad, (maxX - minX) + pad * 2, (maxY - minY) + pad * 2, 14);
         mapCtx.fill();
         mapCtx.stroke();
+
+        // Floorplate Corner Watermark Tag
+        mapCtx.font = '600 10px "JetBrains Mono", monospace';
+        mapCtx.fillStyle = isCurrent ? 'rgba(56, 189, 248, 0.65)' : 'rgba(148, 163, 184, 0.25)';
+        mapCtx.fillText(`LEVEL L${fl}${isCurrent ? ' (ACTIVE)' : ''}`, minX - pad + 10, minY - pad + 16);
         mapCtx.restore();
-      }
+      });
 
       // 3. Architectural Corridor Walls & Walkable Casing
-      const corridorWidthPx = Math.max(24, Math.min(46, viewTransform.scale * 1.2));
+      const corridorWidthPx = Math.max(22, Math.min(42, viewTransform.scale * 1.15));
       activeMap.edges.forEach(e => {
         if (e.edgeType === 'vertical_portal') return;
         const n1 = getNodeById(e.fromNodeId);
         const n2 = getNodeById(e.toNodeId);
         if (!n1 || !n2) return;
-        const p1 = worldToScreen(n1.x, n1.y);
-        const p2 = worldToScreen(n2.x, n2.y);
+        const p1 = nodeToScreen(n1);
+        const p2 = nodeToScreen(n2);
         const onCurrentFloor = (n1.floorLevel === currentFloor && n2.floorLevel === currentFloor);
 
         mapCtx.save();
@@ -1514,22 +1764,55 @@
           mapCtx.lineWidth = corridorWidthPx;
           mapCtx.stroke();
         } else {
-          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.06)';
-          mapCtx.lineWidth = corridorWidthPx * 0.72;
+          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.05)';
+          mapCtx.lineWidth = corridorWidthPx * 0.65;
           mapCtx.stroke();
         }
         mapCtx.restore();
       });
 
-      // 4. Architectural Room / Stair / Entry Footprints
+      // 4. 3D Vertical Portal Shafts (Clearly Connects Start & End Floor Portal Nodes!)
+      activeMap.edges.forEach(e => {
+        if (e.edgeType !== 'vertical_portal') return;
+        const n1 = getNodeById(e.fromNodeId);
+        const n2 = getNodeById(e.toNodeId);
+        if (!n1 || !n2) return;
+        const p1 = nodeToScreen(n1);
+        const p2 = nodeToScreen(n2);
+        const isElev = isElevatorNode(n1) || isElevatorNode(n2);
+        const shaftColor = isElev ? 'rgba(6, 182, 212, 0.65)' : 'rgba(245, 158, 11, 0.65)';
+        const isBypassed = isAccessibleMode && !isElev;
+
+        mapCtx.save();
+        // Outer 3D Shaft Pillar Casing
+        mapCtx.beginPath();
+        mapCtx.moveTo(p1.x, p1.y);
+        mapCtx.lineTo(p2.x, p2.y);
+        mapCtx.strokeStyle = isBypassed ? 'rgba(239, 68, 68, 0.12)' : (isElev ? 'rgba(6, 182, 212, 0.14)' : 'rgba(245, 158, 11, 0.14)');
+        mapCtx.lineWidth = 14;
+        mapCtx.lineCap = 'round';
+        mapCtx.stroke();
+
+        // Inner Dashed 3D Portal Connector Line
+        mapCtx.beginPath();
+        mapCtx.moveTo(p1.x, p1.y);
+        mapCtx.lineTo(p2.x, p2.y);
+        mapCtx.setLineDash([4, 4]);
+        mapCtx.strokeStyle = isBypassed ? 'rgba(239, 68, 68, 0.35)' : shaftColor;
+        mapCtx.lineWidth = 2.2;
+        mapCtx.stroke();
+        mapCtx.restore();
+      });
+
+      // 5. Architectural Room / Stair / Elevator / Washroom / Entry Footprints
       activeMap.nodes.forEach(n => {
         if (n.floorLevel !== currentFloor) return;
-        const pt = worldToScreen(n.x, n.y);
+        const pt = nodeToScreen(n);
         const t = (n.type || '').toLowerCase();
         mapCtx.save();
         if (t.includes('room') || t.includes('door')) {
-          const rw = Math.max(52, viewTransform.scale * 1.65);
-          const rh = Math.max(42, viewTransform.scale * 1.3);
+          const rw = Math.max(48, viewTransform.scale * 1.6);
+          const rh = Math.max(38, viewTransform.scale * 1.25);
           mapCtx.fillStyle = 'rgba(168, 85, 247, 0.1)';
           mapCtx.strokeStyle = 'rgba(168, 85, 247, 0.42)';
           mapCtx.lineWidth = 1.5;
@@ -1538,21 +1821,45 @@
           mapCtx.fill();
           mapCtx.stroke();
         } else if (t.includes('stair')) {
-          const sw = Math.max(42, viewTransform.scale * 1.4);
-          mapCtx.fillStyle = 'rgba(245, 158, 11, 0.12)';
-          mapCtx.strokeStyle = 'rgba(245, 158, 11, 0.5)';
+          const sw = Math.max(40, viewTransform.scale * 1.35);
+          mapCtx.fillStyle = isAccessibleMode ? 'rgba(239, 68, 68, 0.08)' : 'rgba(245, 158, 11, 0.12)';
+          mapCtx.strokeStyle = isAccessibleMode ? 'rgba(239, 68, 68, 0.4)' : 'rgba(245, 158, 11, 0.5)';
           mapCtx.lineWidth = 1.6;
           mapCtx.beginPath();
           mapCtx.roundRect(pt.x - sw / 2, pt.y - sw / 2, sw, sw, 6);
           mapCtx.fill();
           mapCtx.stroke();
-          mapCtx.strokeStyle = 'rgba(245, 158, 11, 0.32)';
+          mapCtx.strokeStyle = isAccessibleMode ? 'rgba(239, 68, 68, 0.25)' : 'rgba(245, 158, 11, 0.32)';
           for (let k = -sw / 2 + 6; k < sw / 2 - 4; k += 6) {
             mapCtx.beginPath();
             mapCtx.moveTo(pt.x - sw / 2 + 4, pt.y + k);
             mapCtx.lineTo(pt.x + sw / 2 - 4, pt.y + k);
             mapCtx.stroke();
           }
+        } else if (t.includes('elevator') || t.includes('lift')) {
+          const ew = Math.max(42, viewTransform.scale * 1.4);
+          mapCtx.fillStyle = 'rgba(6, 182, 212, 0.14)';
+          mapCtx.strokeStyle = 'rgba(6, 182, 212, 0.6)';
+          mapCtx.lineWidth = 1.8;
+          mapCtx.beginPath();
+          mapCtx.roundRect(pt.x - ew / 2, pt.y - ew / 2, ew, ew, 6);
+          mapCtx.fill();
+          mapCtx.stroke();
+          // Elevator double-door split line
+          mapCtx.beginPath();
+          mapCtx.moveTo(pt.x, pt.y - ew / 2 + 4);
+          mapCtx.lineTo(pt.x, pt.y + ew / 2 - 4);
+          mapCtx.strokeStyle = 'rgba(6, 182, 212, 0.35)';
+          mapCtx.stroke();
+        } else if (t.includes('washroom') || t.includes('restroom')) {
+          const ww = Math.max(40, viewTransform.scale * 1.3);
+          mapCtx.fillStyle = 'rgba(236, 72, 153, 0.11)';
+          mapCtx.strokeStyle = 'rgba(236, 72, 153, 0.45)';
+          mapCtx.lineWidth = 1.5;
+          mapCtx.beginPath();
+          mapCtx.roundRect(pt.x - ww / 2, pt.y - ww / 2, ww, ww, 6);
+          mapCtx.fill();
+          mapCtx.stroke();
         } else if (t.includes('entry') || t.includes('exit')) {
           const ew = Math.max(42, viewTransform.scale * 1.35);
           mapCtx.fillStyle = 'rgba(16, 185, 129, 0.09)';
@@ -1566,46 +1873,45 @@
         mapCtx.restore();
       });
 
-      // 5. Draw Topological Graph Centerlines (Clean — No Distance Badges)
+      // 6. Draw Topological Graph Centerlines
       activeMap.edges.forEach(e => {
+        if (e.edgeType === 'vertical_portal') return;
         const n1 = getNodeById(e.fromNodeId);
         const n2 = getNodeById(e.toNodeId);
         if (!n1 || !n2) return;
-        const p1 = worldToScreen(n1.x, n1.y);
-        const p2 = worldToScreen(n2.x, n2.y);
+        const p1 = nodeToScreen(n1);
+        const p2 = nodeToScreen(n2);
         const onCurrentFloor = (n1.floorLevel === currentFloor && n2.floorLevel === currentFloor);
 
         mapCtx.save();
         mapCtx.beginPath();
         mapCtx.moveTo(p1.x, p1.y);
         mapCtx.lineTo(p2.x, p2.y);
-        if (e.edgeType === 'vertical_portal') {
-          mapCtx.setLineDash([4, 4]);
-          mapCtx.strokeStyle = 'rgba(245, 158, 11, 0.75)';
-          mapCtx.lineWidth = 2;
-        } else if (onCurrentFloor) {
+        if (onCurrentFloor) {
           mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
           mapCtx.lineWidth = 2;
         } else {
           mapCtx.setLineDash([5, 5]);
-          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.16)';
-          mapCtx.lineWidth = 1.5;
+          mapCtx.strokeStyle = 'rgba(148, 163, 184, 0.15)';
+          mapCtx.lineWidth = 1.4;
         }
         mapCtx.stroke();
         mapCtx.restore();
       });
 
-      // 6. Draw Active A* Route Highlight
+      // 7. Draw Active A* Route Highlight (Standard Indigo vs Accessible Teal-Cyan vs SOS Red)
       if (activeRoute.length > 1) {
-        const primaryRouteColor = isSosMode ? '#ef4444' : '#6366f1';
-        const glowRouteColor = isSosMode ? 'rgba(239, 68, 68, 0.85)' : 'rgba(99, 102, 241, 0.85)';
+        const primaryRouteColor = isSosMode ? '#ef4444' : (isAccessibleMode ? '#06b6d4' : '#6366f1');
+        const glowRouteColor = isSosMode
+          ? 'rgba(239, 68, 68, 0.85)'
+          : (isAccessibleMode ? 'rgba(6, 182, 212, 0.85)' : 'rgba(99, 102, 241, 0.85)');
 
         for (let i = 0; i < activeRoute.length - 1; i++) {
           const n1 = getNodeById(activeRoute[i]);
           const n2 = getNodeById(activeRoute[i + 1]);
           if (!n1 || !n2) continue;
-          const p1 = worldToScreen(n1.x, n1.y);
-          const p2 = worldToScreen(n2.x, n2.y);
+          const p1 = nodeToScreen(n1);
+          const p2 = nodeToScreen(n2);
           const bothCurrent = (n1.floorLevel === currentFloor && n2.floorLevel === currentFloor);
           const isPortalEdge = n1.floorLevel !== n2.floorLevel;
 
@@ -1619,26 +1925,37 @@
             mapCtx.shadowColor = glowRouteColor;
             mapCtx.shadowBlur = 14;
             mapCtx.lineWidth = 5.5;
+          } else if (isPortalEdge) {
+            mapCtx.setLineDash([5, 4]);
+            mapCtx.strokeStyle = isElevatorNode(n1) ? '#06b6d4' : '#f59e0b';
+            mapCtx.shadowColor = isElevatorNode(n1) ? 'rgba(6, 182, 212, 0.8)' : 'rgba(245, 158, 11, 0.8)';
+            mapCtx.shadowBlur = 10;
+            mapCtx.lineWidth = 3.5;
           } else {
             mapCtx.setLineDash([6, 5]);
-            mapCtx.strokeStyle = isSosMode ? 'rgba(239, 68, 68, 0.42)' : 'rgba(99, 102, 241, 0.42)';
+            mapCtx.strokeStyle = isSosMode
+              ? 'rgba(239, 68, 68, 0.45)'
+              : (isAccessibleMode ? 'rgba(6, 182, 212, 0.45)' : 'rgba(99, 102, 241, 0.45)');
             mapCtx.lineWidth = 2.5;
           }
           mapCtx.stroke();
 
-          if (isPortalEdge && (n1.floorLevel === currentFloor || n2.floorLevel === currentFloor)) {
-            mapCtx.beginPath();
-            mapCtx.arc(p1.x, p1.y, 19, 0, Math.PI * 2);
-            mapCtx.strokeStyle = '#f59e0b';
-            mapCtx.setLineDash([4, 3]);
-            mapCtx.lineWidth = 2;
-            mapCtx.stroke();
+          if (isPortalEdge) {
+            const ringColor = isElevatorNode(n1) ? '#06b6d4' : '#f59e0b';
+            [p1, p2].forEach(pt => {
+              mapCtx.beginPath();
+              mapCtx.arc(pt.x, pt.y, 17, 0, Math.PI * 2);
+              mapCtx.strokeStyle = ringColor;
+              mapCtx.setLineDash([4, 3]);
+              mapCtx.lineWidth = 2;
+              mapCtx.stroke();
+            });
           }
           mapCtx.restore();
         }
       }
 
-      // 7. Draw Nodes & Smart Non-Overlapping Labels
+      // 8. Draw Nodes & 3D-Offset Portal Labels (Shows Both Start & End of Stairs/Elevators!)
       const startId = document.getElementById('startNodeSelect').value;
       const endId = document.getElementById('endNodeSelect').value;
 
@@ -1647,20 +1964,18 @@
       );
 
       sortedNodes.forEach(n => {
-        const pt = worldToScreen(n.x, n.y);
+        const pt = nodeToScreen(n);
         const isCurrent = n.floorLevel === currentFloor;
         const color = getNodeColor(n.type);
         const isStart = n.nodeId === startId;
         const isEnd = n.nodeId === endId;
         const isHovered = hoveredNode && hoveredNode.nodeId === n.nodeId;
-
-        const hasStackedActiveSibling = !isCurrent && activeMap.nodes.some(other =>
-          other.floorLevel === currentFloor &&
-          Math.hypot(other.x - n.x, other.y - n.y) < 0.25
-        );
+        const partners = getPortalPartners(n.nodeId);
+        const isPortalNode = partners.length > 0;
+        const isInActiveRoute = activeRoute.includes(n.nodeId);
 
         mapCtx.save();
-        mapCtx.globalAlpha = isCurrent ? 1.0 : (isStart || isEnd ? 0.75 : 0.3);
+        mapCtx.globalAlpha = isCurrent ? 1.0 : (isStart || isEnd || isPortalNode || isInActiveRoute ? 0.78 : 0.32);
 
         if (isHovered) {
           mapCtx.beginPath();
@@ -1681,28 +1996,34 @@
         }
 
         mapCtx.beginPath();
-        mapCtx.arc(pt.x, pt.y, isCurrent ? 9 : 6.5, 0, Math.PI * 2);
-        mapCtx.fillStyle = color;
+        mapCtx.arc(pt.x, pt.y, isCurrent ? 9 : 6.8, 0, Math.PI * 2);
+        mapCtx.fillStyle = (isAccessibleMode && isStairNode(n)) ? '#64748b' : color;
         mapCtx.fill();
         mapCtx.lineWidth = 2;
         mapCtx.strokeStyle = '#07090e';
         mapCtx.stroke();
 
-        const partner = isCurrent ? getPortalPartnerNode(n.nodeId) : null;
-
-        if (!hasStackedActiveSibling) {
-          let labelText = `${n.label}`;
-          if (partner) {
-            labelText += ` ⇅ L${partner.floorLevel}`;
+        // Always label current-floor nodes AND off-floor portal endpoints / start / end nodes
+        if (isCurrent || isPortalNode || isStart || isEnd) {
+          let labelText = n.label;
+          if (isPortalNode && isCurrent) {
+            const partnerFloors = partners.map(p => `L${p.floorLevel}`).join('/');
+            labelText += ` ⇅ ${partnerFloors}`;
+          } else if (isAccessibleMode && isStairNode(n) && isCurrent) {
+            labelText += ' [Bypassed]';
           }
-          mapCtx.font = isCurrent ? '600 11px "JetBrains Mono", monospace' : '500 10px "JetBrains Mono", monospace';
+
+          mapCtx.font = isCurrent ? '600 11px "JetBrains Mono", monospace' : '500 9.5px "JetBrains Mono", monospace';
           const textW = mapCtx.measureText(labelText).width;
-          const lx = pt.x + 15;
+          const lx = pt.x + 14;
           const ly = pt.y - 9;
 
           if (isCurrent) {
-            mapCtx.fillStyle = 'rgba(7, 9, 14, 0.88)';
-            mapCtx.strokeStyle = partner ? 'rgba(245, 158, 11, 0.4)' : 'rgba(255, 255, 255, 0.1)';
+            mapCtx.fillStyle = 'rgba(7, 9, 14, 0.9)';
+            const borderCol = isElevatorNode(n)
+              ? 'rgba(6, 182, 212, 0.45)'
+              : (isStairNode(n) ? 'rgba(245, 158, 11, 0.45)' : 'rgba(255, 255, 255, 0.1)');
+            mapCtx.strokeStyle = borderCol;
             mapCtx.lineWidth = 1;
             mapCtx.beginPath();
             mapCtx.roundRect(lx - 5, ly - 2, textW + 10, 19, 4);
@@ -1710,19 +2031,23 @@
             mapCtx.stroke();
           }
 
-          mapCtx.fillStyle = isCurrent ? (partner ? '#fde68a' : '#f8fafc') : '#94a3b8';
+          mapCtx.fillStyle = isCurrent
+            ? (isElevatorNode(n) ? '#67e8f9' : (isStairNode(n) ? '#fde68a' : '#f8fafc'))
+            : '#94a3b8';
           mapCtx.fillText(labelText, lx, pt.y + 4);
         }
         mapCtx.restore();
       });
 
-      // 8. Draw Simulated 400-Particle Cloud + Gyro-Locked Navigation Chevron Puck
+      // 9. Draw Simulated 400-Particle Cloud + Gyro-Locked Navigation Chevron Puck
       if (simState.active) {
-        const puckPt = worldToScreen(simState.x, simState.y);
+        const puckPt = worldToScreen(simState.x, simState.y, currentFloor);
         mapCtx.save();
         mapCtx.translate(puckPt.x, puckPt.y);
 
-        const particleFill = isSosMode ? 'rgba(239, 68, 68, 0.48)' : 'rgba(56, 189, 248, 0.48)';
+        const particleFill = isSosMode
+          ? 'rgba(239, 68, 68, 0.5)'
+          : (isAccessibleMode ? 'rgba(6, 182, 212, 0.5)' : 'rgba(56, 189, 248, 0.5)');
         for (let p = 0; p < 16; p++) {
           const ang = (p / 16) * Math.PI * 2 + (performance.now() * 0.0022);
           const rad = 8 + (p % 3) * 4.5;
@@ -1734,7 +2059,9 @@
 
         mapCtx.beginPath();
         mapCtx.arc(0, 0, 21, 0, Math.PI * 2);
-        mapCtx.fillStyle = isSosMode ? 'rgba(239, 68, 68, 0.2)' : 'rgba(56, 189, 248, 0.2)';
+        mapCtx.fillStyle = isSosMode
+          ? 'rgba(239, 68, 68, 0.2)'
+          : (isAccessibleMode ? 'rgba(6, 182, 212, 0.22)' : 'rgba(56, 189, 248, 0.2)');
         mapCtx.fill();
 
         mapCtx.rotate(simState.angle);
@@ -1744,7 +2071,7 @@
         mapCtx.lineTo(-4.5, 0);
         mapCtx.lineTo(-9, -8.5);
         mapCtx.closePath();
-        mapCtx.fillStyle = isSosMode ? '#ef4444' : '#38bdf8';
+        mapCtx.fillStyle = isSosMode ? '#ef4444' : (isAccessibleMode ? '#06b6d4' : '#38bdf8');
         mapCtx.fill();
         mapCtx.lineWidth = 1.8;
         mapCtx.strokeStyle = '#ffffff';
@@ -1826,19 +2153,24 @@
         const pdrEl = document.getElementById('metricPdrState');
 
         if (isPortal) {
+          const usingElevator = isElevatorNode(n1) || isElevatorNode(n2);
           if (!simState.inTransit) {
             simState.inTransit = true;
             simState.transitElapsedMs = 0;
+            const portalKind = usingElevator ? '🛗 Elevator Cabin Portal' : '🪜 Stairwell Portal';
+            document.getElementById('transitModalBadge').innerText = usingElevator
+              ? '♿ ACCESSIBLE ELEVATOR TRANSIT STATE'
+              : '⚠ PROXIMITY STAIRWELL TRANSIT STATE';
             document.getElementById('transitModalTitle').innerText =
-              `Stairwell Portal: Floor L${n1.floorLevel} → Floor L${n2.floorLevel}`;
+              `${portalKind}: Floor L${n1.floorLevel} → Floor L${n2.floorLevel}`;
             document.getElementById('transitModalDesc').innerText =
-              `Traversing ${n1.label} to ${n2.label}. PDR step integration paused to prevent vertical stairwell heading drift.`;
+              `Traversing ${n1.label} to ${n2.label}. PDR step integration paused to prevent vertical heading drift.`;
             overlay.classList.add('show');
           }
 
           if (pdrEl) {
-            pdrEl.innerText = 'PAUSED (Stair Portal)';
-            pdrEl.style.color = '#fbbf24';
+            pdrEl.innerText = usingElevator ? 'PAUSED (Elevator)' : 'PAUSED (Stair Portal)';
+            pdrEl.style.color = usingElevator ? '#67e8f9' : '#fbbf24';
           }
 
           simState.transitElapsedMs += dtMs;
@@ -1880,7 +2212,7 @@
           const distMeters = Math.max(0.5, Math.hypot(dx, dy));
           simState.angle = Math.atan2(dy, dx);
 
-          const metersPerMs = 3.4 / 1000;
+          const metersPerMs = 3.8 / 1000;
           simState.segProgress += (dtMs * metersPerMs) / distMeters;
 
           if (simState.segProgress >= 1) {
@@ -1951,11 +2283,13 @@
 
       const readout = document.getElementById('hoverNodeReadout');
       if (hit) {
-        const partner = getPortalPartnerNode(hit.nodeId);
-        readout.innerText = `Node: ${hit.label} [Floor L${hit.floorLevel} • ${hit.type}]` +
-          (partner ? ` ⇅ Connects to ${partner.label} (Floor L${partner.floorLevel})` : '');
+        const partners = getPortalPartners(hit.nodeId);
+        const partnerText = partners.length
+          ? ` ⇅ Vertical Portal to ${partners.map(p => `${p.label} (L${p.floorLevel})`).join(', ')}`
+          : '';
+        readout.innerText = `Node: ${hit.label} [Floor L${hit.floorLevel} • ${hit.type}]${partnerText}`;
       } else {
-        readout.innerText = 'Click any node on blueprint to set Origin • Shift+Click or Right-Click sets Destination';
+        readout.innerText = 'Click any node to set Origin • Shift+Click or Right-Click sets Destination • 3D Vertical Shafts Visible';
       }
       renderMapCanvas();
     });
@@ -1966,15 +2300,15 @@
     }, { passive: false });
 
     function findNodeAtScreenPos(mx, my) {
-      const hitRadius = 24;
+      const hitRadius = 22;
       const activeFloorNodes = activeMap.nodes.filter(n => n.floorLevel === currentFloor);
       for (const n of activeFloorNodes) {
-        const pt = worldToScreen(n.x, n.y);
+        const pt = nodeToScreen(n);
         if (Math.hypot(mx - pt.x, my - pt.y) <= hitRadius) return n;
       }
       const otherFloorNodes = activeMap.nodes.filter(n => n.floorLevel !== currentFloor);
       for (const n of otherFloorNodes) {
-        const pt = worldToScreen(n.x, n.y);
+        const pt = nodeToScreen(n);
         if (Math.hypot(mx - pt.x, my - pt.y) <= hitRadius) return n;
       }
       return null;
@@ -1986,16 +2320,16 @@
       if (!hit) return;
 
       isSosMode = false;
-      updateSosStatusBanner();
+      updateStatusBanners();
 
       const settingTarget = forceTargetMode || e.shiftKey || canvasClickMode === 'end';
 
       if (settingTarget) {
         const currentStartId = document.getElementById('startNodeSelect').value;
         const startNode = getNodeById(currentStartId);
-        const partner = getPortalPartnerNode(hit.nodeId);
-        if (partner && startNode && startNode.floorLevel === hit.floorLevel) {
-          hit = partner;
+        const partners = getPortalPartners(hit.nodeId);
+        if (partners.length > 0 && startNode && startNode.floorLevel === hit.floorLevel) {
+          hit = partners[0];
         }
         document.getElementById('endNodeSelect').value = hit.nodeId;
         setCanvasClickMode('start');
@@ -2008,10 +2342,10 @@
     }
 
     function switchPresetMap(presetKey) {
-      if (presetKey === 'campus') {
-        activeMap = JSON.parse(JSON.stringify(CAMPUS_DEMO_MAP));
-      } else {
+      if (presetKey === 'home') {
         activeMap = JSON.parse(JSON.stringify(HOME_SURVEY_MAP));
+      } else {
+        activeMap = JSON.parse(JSON.stringify(HORIZON_COMPLEX_MAP));
       }
       currentFloor = 0;
       initMapConsoleUI();
